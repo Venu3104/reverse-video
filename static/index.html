@@ -1,0 +1,446 @@
+<!--
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Reverser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0097B2; /* Light teal background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative; /* Set relative positioning for the body */
+        }
+
+        .logo {
+            position: absolute; /* Absolute positioning for the logo */
+            top: 20px; /* Distance from the top */
+            left: 20px; /* Distance from the left */
+            width: 150px; /* Set a width for the logo */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        h1 {
+            font-weight: bold;
+            font-size: xx-large;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent white */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+        }
+
+        /* Style for the file input */
+        input[type="file"] {
+            display: none; /* Hide default file input */
+        }
+
+        .file-upload-btn {
+            background-color: #4a9b9b; /* Darker teal color */
+            color: white;
+            border: none;
+            padding: 10px 20px; /* Add padding for a button-like appearance */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s;
+            margin: 10px 0; /* Space above button */
+            width: 100%; /* Full width button */
+        }
+
+        .file-upload-btn:hover {
+            background-color: #3e8787; /* Darker teal on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+
+        .file-upload-btn:active {
+            transform: scale(0.95); /* Slightly shrink on click */
+        }
+
+        button {
+            background-color: #64b6b6; /* Light teal color */
+            color: white;
+            border: none;
+            padding: 12px 20px; /* Increased padding for larger buttons */
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px; /* Larger font size */
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 10px; /* Space above button */
+            width: 100%; /* Full width button */
+        }
+
+        button:hover {
+            background-color: #4a9b9b; /* Darker teal on hover */
+            transform: scale(1.05); /* Slightly enlarge on hover */
+        }
+
+        button:active {
+            transform: scale(0.95); /* Slightly shrink on click */
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        video {
+            margin-top: 10px;
+            border: 2px solid #64b6b6; /* Light teal border for the video */
+            border-radius: 8px;
+            width: 100%; /* Responsive */
+            max-width: 600px; /* Limit max width */
+        }
+
+        /* Loading spinner */
+        .loader {
+            border: 5px solid rgba(255, 255, 255, 0.5); /* Light border */
+            border-top: 5px solid #4a9b9b; /* Darker teal color */
+            border-radius: 50%; /* Circular shape */
+            width: 50px; /* Width of the spinner */
+            height: 50px; /* Height of the spinner */
+            animation: spin 1s linear infinite; /* Spin animation */
+            margin-top: 10px; /* Space above the spinner */
+            display: none; /* Initially hidden */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <img src="static/assests/venu.png" alt="Logo" width="200%" height="200%"> /* Replace with your logo */
+    </div>
+    <h1>Upload a Video to Reverse</h1>
+    <form id="upload-form">
+        <label class="file-upload-btn" style="height: 100%; width: 80%; display: flex; align-items: center; justify-content: center;">
+            <p style="font-size: x-large; font-weight: bold;">Choose File</p>
+            <input type="file" name="video" accept="video/*" required>
+        </label>
+        <button type="submit">Upload and Reverse</button>
+        <div class="loader" id="loading-spinner"></div> /* Loading Spinner */
+    </form>
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('upload-form').onsubmit = function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            
+            const formData = new FormData(this);
+            const loader = document.getElementById('loading-spinner');
+            loader.style.display = 'block'; // Show the loading spinner
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/process-video', true);
+
+            xhr.onload = function() {
+                loader.style.display = 'none'; // Hide the loading spinner after processing
+                if (xhr.status === 200) {
+                    const blob = new Blob([xhr.response], { type: 'video/mp4' });
+                    const url = window.URL.createObjectURL(blob);
+                    const resultDiv = document.getElementById('result');
+
+                    // Clear previous results
+                    resultDiv.innerHTML = '';
+
+                    // Create video element to play the reversed video
+                    const videoElement = document.createElement('video');
+                    videoElement.controls = true;
+                    videoElement.src = url;
+                    videoElement.width = 600; // Optional: set width of video
+                    resultDiv.appendChild(videoElement);
+                } else {
+                    alert("Error: " + xhr.statusText);
+                }
+            };
+
+            xhr.onerror = function() {
+                loader.style.display = 'none'; // Hide loading spinner on error
+                alert("An error occurred during the transaction.");
+            };
+
+            xhr.responseType = 'blob'; // Expect a Blob response
+            xhr.send(formData); // Send the request with form data
+        };
+    </script>
+</body>
+</html>
+
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Reversal App</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.6)), url('https://source.unsplash.com/1600x900/?abstract,technology');
+            background-size: cover;
+            background-position: center;
+            color: #fff;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        header h1 {
+            font-size: 3rem;
+            color: #ffcc00;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        header p {
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+
+        .upload-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            max-width: 800px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .video-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .video-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        video {
+            width: 100%;
+            max-width: 350px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: transform 0.3s;
+        }
+
+        video:hover {
+            transform: scale(1.05);
+        }
+
+        .upload-container label {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #ffcc00;
+        }
+
+        .upload-container input[type="file"] {
+            display: block;
+            margin: 10px 0;
+            color: #fff;
+        }
+
+        .upload-container button {
+            background-color: #ff5722;
+            color: #fff;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .upload-container button:hover {
+            background-color: #e64a19;
+        }
+
+        .upload-container button:disabled {
+            background-color: #444;
+            cursor: not-allowed;
+        }
+
+        .spinner {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .spinner div {
+            width: 20px;
+            height: 20px;
+            margin: 5px;
+            background-color: #ffcc00;
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .spinner div:nth-child(1) {
+            animation-delay: -0.32s;
+        }
+
+        .spinner div:nth-child(2) {
+            animation-delay: -0.16s;
+        }
+
+        @keyframes bounce {
+            0%, 80%, 100% {
+                transform: scale(0);
+            }
+            40% {
+                transform: scale(1);
+            }
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #ddd;
+            text-align: center;
+        }
+
+        footer a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #ffaa00;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Reverse My Video</h1>
+        <p>Upload your video and reverse it with just one click!</p>
+    </header>
+
+    <div class="upload-container">
+        <form id="upload-form">
+            <label for="video-upload">Select a video file:</label>
+            <input type="file" id="video-upload" name="video" accept="video/*">
+            <button type="submit" id="reverse-btn" disabled>Reverse Video</button>
+        </form>
+        <div class="spinner" id="upload-spinner">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <div class="video-container">
+            <div class="video-section">
+                <p>Original Video</p>
+                <video id="video-preview" controls></video>
+            </div>
+            <div class="video-section">
+                <p>Reversed Video</p>
+                <video id="reversed-video" controls></video>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Made with <span style="color: red;">&#10084;</span> by <a href="#">venuclicks</a></p>
+    </footer>
+
+    <script>
+        const videoUpload = document.getElementById('video-upload');
+        const reverseBtn = document.getElementById('reverse-btn');
+        const videoPreview = document.getElementById('video-preview');
+        const reversedVideo = document.getElementById('reversed-video');
+        const uploadSpinner = document.getElementById('upload-spinner');
+        const uploadForm = document.getElementById('upload-form');
+
+        videoUpload.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                const url = URL.createObjectURL(file);
+                videoPreview.src = url;
+                videoPreview.style.display = 'block';
+                reverseBtn.disabled = false;
+            }
+        });
+
+        uploadForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            if (videoUpload.files.length === 0) {
+                alert('Please upload a video file first!');
+                return;
+            }
+
+            uploadSpinner.style.display = 'flex';
+            reverseBtn.disabled = true;
+
+            const formData = new FormData();
+            formData.append('video', videoUpload.files[0]);
+
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', '/process-video', true);
+
+            xhr.onload = function () {
+                uploadSpinner.style.display = 'none';
+                reverseBtn.disabled = false;
+
+                if (xhr.status === 200) {
+                    const blob = new Blob([xhr.response], { type: 'video/mp4' });
+                    const url = URL.createObjectURL(blob);
+                    reversedVideo.src = url;
+                    reversedVideo.style.display = 'block';
+                    alert('Video successfully reversed!');
+                } else {
+                    alert('An error occurred while processing the video. Please try again.');
+                }
+            };
+
+            xhr.onerror = function () {
+                uploadSpinner.style.display = 'none';
+                reverseBtn.disabled = false;
+                alert('An error occurred while processing the video. Please check your network connection and try again.');
+            };
+
+            xhr.responseType = 'blob';
+            xhr.send(formData);
+        });
+    </script>
+</body>
+</html>
